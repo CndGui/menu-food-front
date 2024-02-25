@@ -16,7 +16,7 @@ export function Menu() {
     })
 
     return (
-        <ul className="bg-zinc-100 w-[52rem] h-[24rem] p-4 rounded-md flex flex-wrap justify-between gap-y-6 overflow-y-auto">
+        <ul className="bg-zinc-100 w-[52rem] h-[24rem] p-4 rounded-md flex flex-wrap justify-around gap-y-6 overflow-y-auto">
             {isLoading ?
                 <span>Loading...</span>
                 :

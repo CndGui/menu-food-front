@@ -25,7 +25,7 @@ export function PostFoodModal({ event }: { event: () => void }) {
 
     return (
         <div className="fixed h-screen w-screen top-0 left-0 bg-black/30 flex items-center justify-center">
-            <div className="relative w-[48rem] h-[24rem] bg-white rounded-md p-16">
+            <div className="relative w-[48rem] bg-white rounded-md p-16">
                 <form onSubmit={handleSubmit} className="flex flex-col gap-2">
                     <input
                         className="py-2 px-1 outline-none border-2 rounded-md focus:border-blue-600"
