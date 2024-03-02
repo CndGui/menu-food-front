@@ -3,8 +3,10 @@ import { getFoodDataByName } from "@/hooks/getFoodDataByName";
 import { postFoodData } from "@/hooks/postFoodData";
 import axios from "axios";
 import { useState } from "react"
+import { useMutation, useQueryClient } from "react-query";
 
 export function DeleteFoodModal({ event }: { event: () => void }) {
+    const client = useQueryClient()
     const [isLoading, setLoading] = useState(false)
     const [foodName, setFoodName] = useState("")
     const [exists, setExists] = useState(true)
@@ -15,14 +17,21 @@ export function DeleteFoodModal({ event }: { event: () => void }) {
         setExists(true)
     }
 
+    const mutation = useMutation(() => deleteFoodData(foodName), {
+        onSuccess: () => {
+            client.invalidateQueries("foods")
+            event()
+            setLoading(false)
+        }
+    })
+
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault()
         setLoading(true)
 
         const foodData = await getFoodDataByName(foodName)
-        console.log(foodData.exist)
         if(foodData.exist) {
-            deleteFoodData(foodName).finally(() => {event(); setLoading(false)})
+            mutation.mutate()
             setExists(true)
         }else {
             setExists(false)

@@ -1,7 +1,9 @@
 import { postFoodData } from "@/hooks/postFoodData";
 import { useState } from "react"
+import { useMutation, useQueryClient } from "react-query";
 
 export function PostFoodModal({ event }: { event: () => void }) {
+    const client = useQueryClient()
     const [isLoading, setLoading] = useState(false)
     const [food, setFood] = useState<FoodData>({
         name: "",
@@ -16,11 +18,19 @@ export function PostFoodModal({ event }: { event: () => void }) {
         })
     }
 
+    const mutation = useMutation(() => postFoodData(food), {
+        onSuccess: () => {
+            client.invalidateQueries("foods")
+            event()
+            setLoading(false)
+        }
+    })
+    
     function handleSubmit(e: React.FormEvent) {
         e.preventDefault()
         setLoading(true)
 
-        postFoodData(food).finally(() => { event(); setLoading(false) })
+        mutation.mutate();
     }
 
     return (
